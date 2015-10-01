@@ -1,42 +1,76 @@
+ArrayList<Snowflake> snowflakes = new ArrayList<Snowflake>();
+
 void setup()
 {
-  //your code here
+  size(500,500);
+  background(0);
+  for(int i = 0; i < 100; i++)
+  {
+    snowflakes.add(new Snowflake());
+  }
 }
 void draw()
 {
-  //your code here
-}
-void mouseDragged()
-{
-  //your code here
+  if(mousePressed)
+  {
+    stroke(255,0,0);
+    line(mouseX, mouseY, pmouseX, pmouseY);
+  }
+  for(Snowflake s : snowflakes)
+  {
+    s.erase();
+    s.lookDown();
+    s.move();
+    s.show();
+  }
 }
 
 class Snowflake
 {
-  //class member variable declarations
+  int x;
+  int y;
+  int size = 5;
+  boolean isMoving = true;
   Snowflake()
   {
-    //class member variable initializations
+    x = (int)(Math.random() * (width - 10)) + 5;
+    y = (int)(Math.random() * (height - 10));
   }
   void show()
   {
-    //your code here
+    fill(255);
+    stroke(0);
+    ellipse(x, y, size, size);
   }
   void lookDown()
   {
-    //your code here
+    
+    isMoving = (get(x - 5, y + 5) == color(0)) && (get(x, y + 5) == color(0)) && (get(x + 5, y + 5) == color(0));
   }
   void erase()
   {
-    //your code here
+    fill(0);
+    stroke(0);
+    ellipse(x, y, size + 2, size + 2);
   }
   void move()
   {
-    //your code here
+    if(isMoving)
+    {
+      x += (Math.random() * 3) - 1;
+      if(x < 5) x = 5;
+      if(x > width - 5) x = width - 5;
+      y += 1;
+      wrap();
+    }
   }
   void wrap()
   {
-    //your code here
+    if(y + 10 > height)
+    {
+      y = 0;
+      x = (int)(Math.random() * width - 10) + 5;
+    }
   }
 }
 
